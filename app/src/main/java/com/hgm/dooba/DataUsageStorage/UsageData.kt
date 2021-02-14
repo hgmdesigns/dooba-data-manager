@@ -1,9 +1,8 @@
-package com.hgm.dooba
+package com.hgm.dooba.DataUsageStorage
 
 import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.telephony.TelephonyManager
-import androidx.core.content.ContextCompat.getSystemService
 import me.ibrahimsn.library.DataUsageManager
 import me.ibrahimsn.library.Interval
 import me.ibrahimsn.library.NetworkType

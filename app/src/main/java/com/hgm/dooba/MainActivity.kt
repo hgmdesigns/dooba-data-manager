@@ -8,11 +8,11 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.format.Formatter.formatShortFileSize
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.hgm.dooba.DataUsageStorage.ActiveUsageSession
+import com.hgm.dooba.DataUsageStorage.UsageData
 import com.hgm.dooba.mail.SendEmail
 import kotlinx.android.synthetic.main.activity_main.*
-import me.ibrahimsn.library.Usage
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,9 +25,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         sendMail.setOnClickListener{
-            getUsageData()
+            updateAndSendUsage()
         }
         applyForPermission()
+        val callLog = ActiveUsageSession(this)
+        callLog.logData()
     }
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -45,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getUsageData() {
+    private fun updateAndSendUsage() {
         val usageDataResult = UsageData(this)
         val usageDataOutput = usageDataResult.dataUsageResult()
         val userDeviceInfo = GetDeviceInfo(this)
