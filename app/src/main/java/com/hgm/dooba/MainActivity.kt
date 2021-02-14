@@ -1,0 +1,72 @@
+package com.hgm.dooba
+
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.provider.Settings
+import android.text.format.Formatter.formatShortFileSize
+import android.util.Log
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import com.hgm.dooba.mail.SendEmail
+import kotlinx.android.synthetic.main.activity_main.*
+import me.ibrahimsn.library.Usage
+
+class MainActivity : AppCompatActivity() {
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        enablePermission.setOnClickListener{
+            startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+        }
+
+        sendMail.setOnClickListener{
+            val sumUsage = getUsageData().downloads + getUsageData().uploads
+            var dataLimit = 24
+            usage.text = (formatShortFileSize(this,sumUsage)).toString() + " /" + dataLimit + " GB"
+            getUsageData()
+        }
+        applyForPermission()
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == 0 && grantResults.isNotEmpty()) {
+            for(i in grantResults.indices) {
+                if(grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("PermissionRequest", "${permissions[i]} granted!")
+                }
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getUsageData(): Usage {
+        var usageDataResult = UsageData(this)
+        var userDeviceInfo = GetDeviceInfo(this)
+        SendEmail(
+            this,
+            usageDataResult.dataUsageResult(),
+            userDeviceInfo.getDeviceInfo()
+
+        )
+            .send("hassangm@pm.me")
+        return usageDataResult.dataUsageResult()
+    }
+
+    private fun applyForPermission() {
+        val applyForPermission = GetPermission(this)
+        applyForPermission.hasPhoneStatePermission()
+        applyForPermission.hasPackageUsagePermission()
+        applyForPermission.requestPermission()
+    }
+
+
+}
