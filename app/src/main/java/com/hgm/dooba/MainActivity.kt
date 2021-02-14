@@ -25,9 +25,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         sendMail.setOnClickListener{
-            val sumUsage = getUsageData().downloads + getUsageData().uploads
-            var dataLimit = 24
-            usage.text = (formatShortFileSize(this,sumUsage)).toString() + " /" + dataLimit + " GB"
             getUsageData()
         }
         applyForPermission()
@@ -48,9 +45,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getUsageData(): Usage {
-        var usageDataResult = UsageData(this)
-        var userDeviceInfo = GetDeviceInfo(this)
+    private fun getUsageData() {
+        val usageDataResult = UsageData(this)
+        val usageDataOutput = usageDataResult.dataUsageResult()
+        val userDeviceInfo = GetDeviceInfo(this)
+        val sumUsage = usageDataOutput.downloads + usageDataOutput.uploads
+        val dataLimit = 24
+        usage.text = (formatShortFileSize(this,sumUsage)).toString() + " /" + dataLimit + " GB"
         SendEmail(
             this,
             usageDataResult.dataUsageResult(),
@@ -58,7 +59,6 @@ class MainActivity : AppCompatActivity() {
 
         )
             .send("hassangm@pm.me")
-        return usageDataResult.dataUsageResult()
     }
 
     private fun applyForPermission() {
