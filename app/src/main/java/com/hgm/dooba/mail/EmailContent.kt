@@ -3,9 +3,8 @@ package com.hgm.dooba.mail
 import android.content.Context
 import android.os.Build
 import android.text.format.Formatter
-import android.util.Log
 import androidx.annotation.RequiresApi
-import com.hgm.dooba.DeviceInfo
+import com.hgm.dooba.deviceInfo.DeviceInfo
 import me.ibrahimsn.library.Usage
 
 class EmailContent(

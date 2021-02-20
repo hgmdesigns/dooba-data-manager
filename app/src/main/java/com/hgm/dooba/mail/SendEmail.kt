@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import co.nedim.maildroidx.MaildroidX
 import co.nedim.maildroidx.MaildroidXType
-import com.hgm.dooba.DeviceInfo
+import com.hgm.dooba.deviceInfo.DeviceInfo
 import me.ibrahimsn.library.Usage
 
 class SendEmail(

@@ -1,4 +1,4 @@
-package com.hgm.dooba.DataUsageStorage
+package com.hgm.dooba.dataUsageStorage
 
 import android.content.Context
 import android.util.Log
@@ -11,12 +11,19 @@ class ActiveUsageSession(private val context: Context) {
     val uploads = usageDataOutput.uploads
     private val finalDataUsage = downloads + uploads
     val existingUsage = finalDataUsage
+
+    val usageStorage = UsageStorage(context)
+
+    fun storeCurrentExistingUsageData() {
+        usageStorage.writeFileOnInternalStorage("existingUsage", existingUsage.toString())
+    }
+
     fun getActiveUsageSessionData(): Long {
-        return finalDataUsage - existingUsage
+       val storeExistingUsageData = usageStorage.readFileOnInternalStorage("existingUsage").toLong()
+        return finalDataUsage - storeExistingUsageData
     }
     fun logData() {
         Log.d('m'.toString(), "LOGOUTPUT ${getActiveUsageSessionData()}")
     }
-    //TODO STORE EXISTING USAGE IN SQL AND GET IT FROM THERE
-    // ALSO USE THIS CLASS EVERYWHERE TO GET FINAL DATA
+
 }
