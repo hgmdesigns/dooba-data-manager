@@ -9,12 +9,10 @@ import me.ibrahimsn.library.Usage
 
 class EmailContent(
     private val context: Context,
-    usage: Usage,
+    usage: Long,
     deviceInfo: DeviceInfo
 ) {
-    private val upload = usage.uploads
-    private val download = usage.downloads
-    private val sumData = upload + download
+    val sumData = usage
     val Imei = deviceInfo.Imei
     val simNumber = deviceInfo.simNumber
 

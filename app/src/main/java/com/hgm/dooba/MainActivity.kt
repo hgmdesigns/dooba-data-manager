@@ -11,16 +11,11 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.hgm.dooba.dataUsageStorage.ActiveUsageSession
-import com.hgm.dooba.dataUsageStorage.UsageData
 import com.hgm.dooba.deviceInfo.GetDeviceInfo
 import com.hgm.dooba.mail.SendEmail
-import com.hgm.dooba.passwordManager.MyAlertDialogFragment
-import com.hgm.dooba.passwordManager.PasswordListener
-import com.hgm.dooba.passwordManager.PasswordManager
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(),
-    PasswordManager.EditNameDialogListener
+class MainActivity : AppCompatActivity()
 {
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -34,12 +29,15 @@ class MainActivity : AppCompatActivity(),
         }
 
         sendMail.setOnClickListener{
-            updateAndSendUsage()
+            sendMail()
+        }
+
+        getUsage.setOnClickListener {
+            updateUsage()
         }
 
         settings.setOnClickListener {
-            MyAlertDialogFragment()
-                .show(supportFragmentManager, MyAlertDialogFragment.TAG)
+            startActivity(Intent(this, settingsActivity.javaClass))
         }
 
         applyForPermission()
@@ -61,18 +59,27 @@ class MainActivity : AppCompatActivity(),
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun updateAndSendUsage() {
+    private fun updateUsage() {
         val activeUsageSession = ActiveUsageSession(this)
         val sumUsage = activeUsageSession.getActiveUsageSessionData()
-        val usageDataResult = UsageData(this)
-        val userDeviceInfo = GetDeviceInfo(this)
-        val dataLimit = 24
+        val dataLimit = activeUsageSession.getUsageLimit()
+        if (dataLimit.toString().isEmpty() && sumUsage.toString().isEmpty()) {
+            Toast.makeText(this, "Please set Sim Number & Data Limit first!", Toast.LENGTH_LONG).show()
+        } else {
+            usage.text = (formatShortFileSize(this,sumUsage)).toString() + " /" + dataLimit + " GB"
+        }
 
-        usage.text = (formatShortFileSize(this,sumUsage)).toString() + " /" + dataLimit + " GB"
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun sendMail() {
+        val activeUsageSession = ActiveUsageSession(this)
+        val sumUsage = activeUsageSession.getActiveUsageSessionData()
+        val userDeviceInfo = GetDeviceInfo(this)
 
         SendEmail(
             this,
-            usageDataResult.dataUsageResult(),
+            sumUsage,
             userDeviceInfo.getDeviceInfo()
 
         )
@@ -87,8 +94,5 @@ class MainActivity : AppCompatActivity(),
         applyForPermission.requestPermission()
     }
 
-    override fun onFinishEditDialog(inputText: String?) {
-        Toast.makeText(this, "Hi, $inputText", Toast.LENGTH_SHORT).show()
-    }
 
 }

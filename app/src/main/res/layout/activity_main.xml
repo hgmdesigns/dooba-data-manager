@@ -22,7 +22,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
-        android:text="12/25 gb"
+        android:text="Tap Get Usage"
         android:textColor="#FFFFFF"
         android:textSize="32dp"
         android:textStyle="bold" />
@@ -65,5 +65,12 @@
         android:layout_gravity="fill_horizontal"
         android:layout_marginTop="162dp"
         android:text="Settings" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|clip_vertical"
+        android:layout_marginTop="162dp"
+        android:text="@string/copyright" />
 
 </GridLayout>

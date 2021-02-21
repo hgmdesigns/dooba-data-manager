@@ -12,7 +12,7 @@ import me.ibrahimsn.library.Usage
 
 class SendEmail(
     private val context: Context,
-    val usageDataResult: Usage,
+    val usageDataResult: Long,
     val deviceInfo: DeviceInfo
 ) {
     private val emailContent = EmailContent(context,usageDataResult, deviceInfo)

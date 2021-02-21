@@ -15,7 +15,7 @@ class UsageData(private val context: Context) {
     private val manager = DataUsageManager(networkStatsManager, telephonyManager.subscriberId)
     // Monitor single interval
     fun dataUsageResult(): Usage {
-        return manager.getUsage(Interval.last30days, NetworkType.WIFI)
+        return manager.getUsage(Interval.last30days, NetworkType.MOBILE)
     }
 
 }

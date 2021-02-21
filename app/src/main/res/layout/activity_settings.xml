@@ -20,16 +20,8 @@
         android:layout_row="0"
         android:layout_column="0"
         android:layout_gravity="fill_horizontal"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="162dp"
         android:text="Reset Usage" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_row="0"
-        android:layout_column="0">
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/simNumberInput"
@@ -39,6 +31,26 @@
         android:layout_column="0"
         android:hint="Enter Sim Number"
         android:inputType="number" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/usageLimitInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:layout_marginTop="54dp"
+        android:hint="Enter Usage Limit"
+        android:inputType="number" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:layout_marginTop="108dp"
+        android:hint="Password"
+        android:inputType="textPassword" />
 
 
 </GridLayout>
