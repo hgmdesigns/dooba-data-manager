@@ -1,36 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DD2C00"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:id="@+id/body"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_row="0"
-        android:layout_column="0"
-        android:background="#03A9F4"
-        android:orientation="vertical"></LinearLayout>
-
-    <Button
-        android:id="@+id/resetUsage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_row="0"
-        android:layout_column="0"
-        android:layout_gravity="fill_horizontal"
-        android:layout_marginTop="162dp"
-        android:text="Reset Usage" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/simNumberInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_row="0"
-        android:layout_column="0"
-        android:hint="Enter Sim Number"
-        android:inputType="number" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/usageLimitInput"
@@ -38,19 +13,37 @@
         android:layout_height="wrap_content"
         android:layout_row="0"
         android:layout_column="0"
-        android:layout_marginTop="54dp"
+        android:layout_marginBottom="16dp"
         android:hint="Enter Usage Limit"
-        android:inputType="number" />
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/resetUsage"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:layout_gravity="fill_horizontal"
+        android:text="Reset Usage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        tools:ignore="MissingConstraints" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/password"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_row="0"
         android:layout_column="0"
-        android:layout_marginTop="108dp"
         android:hint="Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usageLimitInput" />
 
 
-</GridLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,19 +13,21 @@ class GetDeviceInfo(private val context: Context) {
     val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
     @RequiresApi(Build.VERSION_CODES.O)
     val IMEI: String = tm.imei
+    val simNumber: String = tm.simSerialNumber
 
     fun getDeviceInfo(): DeviceInfo {
         DeviceInfo.Imei = IMEI
-        DeviceInfo.simNumber = if (getSimNumber().isEmpty()) tm.simSerialNumber else getSimNumber()
+        DeviceInfo.simNumber = simNumber
         return DeviceInfo
     }
 
-    fun setSimNumber(updatedSimNumber: Editable?) {
-        fileStorage.writeFileOnInternalStorage("Sim Number", updatedSimNumber.toString())
-        DeviceInfo.simNumber = updatedSimNumber.toString()
-    }
-
-    fun getSimNumber(): String {
-        return fileStorage.readFileOnInternalStorage("Sim Number")
-    }
+//    fun setSimNumber(updatedSimNumber: Editable?) {
+//        fileStorage.writeFileOnInternalStorage("Sim Number", updatedSimNumber.toString())
+//        DeviceInfo.simNumber = updatedSimNumber.toString()
+//    }
+//
+//    fun getSimNumber(): String {
+//        DeviceInfo.simNumber = simNumber
+//        return
+//    }
 }

@@ -37,13 +37,13 @@ class SendEmail(
                 override val timeout: Long = 4000 //Add timeout accordingly
 
                 override fun onSuccess() {
-                    Toast.makeText(context as Activity,"Mail sent!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,"Mail sent!", Toast.LENGTH_SHORT).show()
 
                 }
 
                 override fun onFail(errorMessage: String) {
 
-                    Toast.makeText(context as Activity, errorMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                 }
 
             })

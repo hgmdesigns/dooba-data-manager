@@ -6,15 +6,15 @@ import android.util.Log
 import android.widget.Toast
 
 class ActiveUsageSession(private val context: Context) {
-    val usageDataResult = UsageData(context)
-    val usageDataOutput = usageDataResult.dataUsageResult()
+    private val usageDataResult = UsageData(context)
+    private val usageDataOutput = usageDataResult.dataUsageResult()
 
-    val downloads = usageDataOutput.downloads
-    val uploads = usageDataOutput.uploads
+    private val downloads = usageDataOutput.downloads
+    private val uploads = usageDataOutput.uploads
     private val finalDataUsage = downloads + uploads
     val existingUsage = finalDataUsage
 
-    val usageStorage = UsageStorage(context)
+    private val usageStorage = UsageStorage(context)
 
 
     fun storeCurrentExistingUsageData() {
@@ -23,8 +23,16 @@ class ActiveUsageSession(private val context: Context) {
 
     fun getActiveUsageSessionData(): Long {
        val storeExistingUsageData = usageStorage.readFileOnInternalStorage("existingUsage").toLong()
-        return finalDataUsage - storeExistingUsageData
+        return  finalDataUsage - storeExistingUsageData
     }
+
+//    fun storeEmail(email: Editable?) {
+//        usageStorage.writeFileOnInternalStorage("email", email.toString())
+//    }
+//
+//    fun getEmail(): String {
+//        return usageStorage.readFileOnInternalStorage("email").toString()
+//    }
 
     fun storeUsageLimit(usageLimit: Editable?){
         usageStorage.writeFileOnInternalStorage("usageLimit", usageLimit.toString())

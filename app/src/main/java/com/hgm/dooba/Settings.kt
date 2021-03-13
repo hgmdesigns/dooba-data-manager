@@ -19,24 +19,34 @@ class Settings : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
         val usageLimitStore = ActiveUsageSession(this)
         val activeUsageSession = ActiveUsageSession(this)
-        val deviceInfo = GetDeviceInfo(this)
         val mainActivity = MainActivity()
 
-        simNumberInput.text = SpannableStringBuilder(deviceInfo.getSimNumber())
+//        simNumberInput.text = SpannableStringBuilder(deviceInfo.getSimNumber())
         usageLimitInput.text = SpannableStringBuilder(usageLimitStore.getUsageLimit().toString())
+//        toEmailInput.text = SpannableStringBuilder(usageLimitStore.getEmail())
 
         val usageLimit = usageLimitInput.text
-        val simNumber = simNumberInput.text
+//        val simNumber = simNumberInput.text
+//        val emailAdr = toEmailInput.text
 
         resetUsage.setOnClickListener{
-            if (password.text?.toString().equals("hgm")!!) {
-                deviceInfo.setSimNumber(simNumber)
+            if (password.text?.toString().equals("hgm")) {
+//                deviceInfo.setSimNumber(simNumber)
                 activeUsageSession.storeCurrentExistingUsageData()
                 usageLimitStore.storeUsageLimit(usageLimit)
                 startActivity(Intent(this, mainActivity.javaClass))
-                Toast.makeText(this,"Sim Number Changed & Usage Reset!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Usage Reset!", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this,"Password Incorrect", Toast.LENGTH_SHORT).show()
+            }
+
+//            changeMail.setOnClickListener{
+//                if (password.text?.toString().equals("hgm")) {
+////                    usageLimitStore.storeEmail(emailAdr)
+//                    Toast.makeText(this,"Email Address Changed", Toast.LENGTH_SHORT).show()
+//                } else {
+//                    Toast.makeText(this,"Password Incorrect", Toast.LENGTH_SHORT).show()
+//                }
             }
 
         }
@@ -44,4 +54,4 @@ class Settings : AppCompatActivity() {
     }
 
 
-}
+//}

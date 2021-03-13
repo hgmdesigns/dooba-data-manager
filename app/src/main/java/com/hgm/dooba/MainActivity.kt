@@ -10,10 +10,16 @@ import android.text.format.Formatter.formatShortFileSize
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.work.*
 import com.hgm.dooba.dataUsageStorage.ActiveUsageSession
 import com.hgm.dooba.deviceInfo.GetDeviceInfo
 import com.hgm.dooba.mail.SendEmail
+import com.hgm.dooba.worker.AutoMailWorker
+import com.hgm.dooba.worker.AutoNotifyWorker
+import com.hgm.dooba.worker.CheckUsageWorkerManager
+import io.karn.notify.Notify
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity()
 {
@@ -29,7 +35,7 @@ class MainActivity : AppCompatActivity()
         }
 
         sendMail.setOnClickListener{
-            sendMail()
+            startWorker()
         }
 
         getUsage.setOnClickListener {
@@ -41,6 +47,7 @@ class MainActivity : AppCompatActivity()
         }
 
         applyForPermission()
+
     }
 
     override fun onRequestPermissionsResult(
@@ -66,25 +73,13 @@ class MainActivity : AppCompatActivity()
         if (dataLimit.toString().isEmpty() && sumUsage.toString().isEmpty()) {
             Toast.makeText(this, "Please set Sim Number & Data Limit first!", Toast.LENGTH_LONG).show()
         } else {
-            usage.text = (formatShortFileSize(this,sumUsage)).toString() + " /" + dataLimit + " GB"
+            usage.text = (formatShortFileSize(this,sumUsage)).toString() + " /" + (dataLimit / sumUsage)*100 + " GB"
+            savedUsage.text = (formatShortFileSize(this,activeUsageSession.existingUsage.toLong())).toString()
         }
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun sendMail() {
-        val activeUsageSession = ActiveUsageSession(this)
-        val sumUsage = activeUsageSession.getActiveUsageSessionData()
-        val userDeviceInfo = GetDeviceInfo(this)
 
-        SendEmail(
-            this,
-            sumUsage,
-            userDeviceInfo.getDeviceInfo()
-
-        )
-            .send("hassangm@pm.me")
-    }
 
     private fun applyForPermission() {
         val applyForPermission = GetPermission(this)
@@ -93,6 +88,25 @@ class MainActivity : AppCompatActivity()
         applyForPermission.hasPackageUsagePermission()
         applyForPermission.requestPermission()
     }
+
+    // Constrainsts for Worker
+    fun createConstraints() = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)  // if connected to Internet
+        .build()
+
+    // Worker Request
+    fun createWorkRequest() = PeriodicWorkRequestBuilder<AutoNotifyWorker>(15, TimeUnit.MINUTES)  // setting period to 15 Minutes
+        .setConstraints(createConstraints())
+        // setting a backoff on case the work needs to retry
+        .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
+        .build()
+
+    // Enqueue Worker
+    fun startWorker() {
+        WorkManager.getInstance().enqueueUniquePeriodicWork("Check", ExistingPeriodicWorkPolicy.REPLACE, createWorkRequest())
+    }
+
+
 
 
 }
